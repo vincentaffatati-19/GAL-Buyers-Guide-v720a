@@ -17,6 +17,7 @@
   const meta = window.GOLF_BALL_META || {};
   const state = {
     audience: "men",
+    retailer: "all",
     swing: "not-sure",
     feel: "no-preference",
     cover: "balanced",
@@ -53,6 +54,57 @@
     return terms.some((term) => haystack.includes(term));
   }
 
+
+  const RETAILERS = {
+    all: { shortLabel: "All Retailers" },
+    walmart: { shortLabel: "Walmart" },
+    dicks: { shortLabel: "Dick’s" },
+    pga: { shortLabel: "PGA Superstore" },
+    amazon: { shortLabel: "Amazon" },
+    brand: { shortLabel: "Brand Direct" },
+  };
+
+  function retailerLabel(value = state.retailer) {
+    return RETAILERS[value]?.shortLabel || "All Retailers";
+  }
+
+  function retailerAvailable(ball, retailer = state.retailer) {
+    if (retailer === "all") return true;
+    if (retailer === "walmart") return Boolean(ball.availableWalmart);
+    if (retailer === "dicks") return Boolean(ball.availableDicks);
+    if (retailer === "pga") return Boolean(ball.availablePgaSuperstore);
+    if (retailer === "amazon") return Boolean(ball.availableAmazon);
+    if (retailer === "brand") return Boolean(ball.availableBrandDirect);
+    return true;
+  }
+
+  function retailerNote(ball, retailer = state.retailer) {
+    if (retailer === "all") return "Availability varies by store and online channel.";
+    if (retailer === "walmart") return ball.walmartAvailabilityNote || "Walmart availability not confirmed in the current database.";
+    if (retailer === "dicks") return ball.dicksAvailabilityNote || "Dick’s availability not confirmed in the current database.";
+    if (retailer === "pga") return ball.pgaAvailabilityNote || "PGA Superstore availability not confirmed in the current database.";
+    if (retailer === "amazon") return ball.amazonAvailabilityNote || "Amazon availability not confirmed in the current database.";
+    if (retailer === "brand") return ball.brandAvailabilityNote || "Brand-direct availability not confirmed in the current database.";
+    return "Availability varies by retailer.";
+  }
+
+  function retailerLink(ball, retailer = state.retailer) {
+    if (retailer === "walmart") return ball.walmartUrl || "";
+    if (retailer === "dicks") return ball.dicksUrl || "";
+    if (retailer === "pga") return ball.pgaSuperstoreUrl || "";
+    if (retailer === "amazon") return ball.amazonAffiliateUrl || ball.amazonSearchUrl || "";
+    if (retailer === "brand") return ball.brandSiteUrl || ball.sourceUrl || "";
+    return ball.sourceUrl || ball.brandSiteUrl || ball.amazonSearchUrl || "";
+  }
+
+  function retailerButtonText(retailer = state.retailer) {
+    if (retailer === "all") return "Product source ↗";
+    if (retailer === "amazon") return "Check Amazon ↗";
+    if (retailer === "brand") return "Brand site ↗";
+    return `Check ${retailerLabel(retailer)} ↗`;
+  }
+
+
   function addAudienceSelector() {
     const controls = $(".controls");
     const firstExistingGroup = controls?.querySelector(".control-group");
@@ -69,6 +121,33 @@
       </div>
     `;
     controls.insertBefore(wrapper, firstExistingGroup);
+  }
+
+
+  function addRetailerSelector() {
+    const controls = $(".controls");
+    const audienceGroup = $('[data-generated="audience-control"]');
+    if (!controls || $('[data-generated="retailer-control"]')) return;
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "control-group retailer-control";
+    wrapper.dataset.generated = "retailer-control";
+    wrapper.innerHTML = `
+      <label>Where are you shopping?</label>
+      <div class="help">Use Store Mode in the aisle or when shopping a specific retailer. Local inventory may vary.</div>
+      <div class="segmented retailer-segmented">
+        <button class="active" data-field="retailer" data-value="all">All</button>
+        <button data-field="retailer" data-value="walmart">Walmart</button>
+        <button data-field="retailer" data-value="dicks">Dick’s</button>
+        <button data-field="retailer" data-value="pga">PGA Superstore</button>
+        <button data-field="retailer" data-value="amazon">Amazon</button>
+        <button data-field="retailer" data-value="brand">Brand Direct</button>
+      </div>
+    `;
+
+    if (audienceGroup?.nextSibling) controls.insertBefore(wrapper, audienceGroup.nextSibling);
+    else if (audienceGroup) controls.appendChild(wrapper);
+    else controls.insertBefore(wrapper, controls.firstChild);
   }
 
   function addSupportingStyles() {
@@ -177,6 +256,19 @@
       }
     `;
     document.head.appendChild(style);
+  }
+
+
+  function addMobilePanelCloseButton() {
+    const controls = $(".controls");
+    if (!controls || $("#mobilePanelClose")) return;
+
+    const closeButton = document.createElement("button");
+    closeButton.id = "mobilePanelClose";
+    closeButton.type = "button";
+    closeButton.className = "mobile-panel-close";
+    closeButton.textContent = "Hide Fit";
+    controls.insertBefore(closeButton, controls.firstChild);
   }
 
   function populateBrands() {
@@ -347,6 +439,7 @@
 
   function matchesFilters(ball) {
     if (!isAudienceEligible(ball)) return false;
+    if (!retailerAvailable(ball)) return false;
     if (state.brand !== "all" && ball.brand !== state.brand) return false;
 
     if (state.search) {
@@ -415,7 +508,7 @@
       cards.innerHTML = `
         <div class="no-results">
           <h3>No exact matches found</h3>
-          <p>Try resetting one or more preferences. Audience eligibility remains enforced.</p>
+          <p>Try All Retailers or loosen one of your fit preferences. Local store inventory changes often.</p>
         </div>
       `;
       return;
@@ -423,8 +516,9 @@
 
     cards.innerHTML = results.slice(0, 12).map((ball) => {
       const womenClass = ball.productAudience === "Women-specific" ? " audience-badge--women" : "";
-      const source = ball.sourceUrl
-        ? `<a class="ball-card__link" href="${escapeHtml(ball.sourceUrl)}" target="_blank" rel="noopener noreferrer">Product source ↗</a>`
+      const shoppingUrl = retailerLink(ball);
+      const source = shoppingUrl
+        ? `<a class="ball-card__link" href="${escapeHtml(shoppingUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(retailerButtonText())}</a>`
         : "";
       const warning = includesAny(ball.linkStatus, ["sold out", "unavailable"])
         ? `<span class="availability-warning">${escapeHtml(ball.linkStatus)}</span>`
@@ -444,6 +538,11 @@
           </div>
 
           <span class="audience-badge${womenClass}">${escapeHtml(audienceLabel(ball))}</span>
+
+          <div class="retailer-mode-note">
+            <b>${escapeHtml(retailerLabel())}:</b> ${escapeHtml(retailerNote(ball))}
+            ${state.retailer !== "all" ? `<span>Ranked only from the selected shopping source.</span>` : `<span>Select a retailer to use Store Mode.</span>`}
+          </div>
 
           <div class="ball-specs">
             <div class="ball-spec"><b>Compression</b>${escapeHtml(displayCompression(ball))}</div>
@@ -501,7 +600,7 @@
     if (brandCount) brandCount.textContent = String(new Set(eligiblePool.map((ball) => ball.brand)).size);
     if (resultCount) resultCount.textContent = String(results.length);
     if (topPick) topPick.textContent = results[0] ? `${results[0].brand} ${results[0].model}` : "—";
-    if (sourceFile) sourceFile.textContent = meta.sourceFile || "updated golf-ball database";
+    if (sourceFile) sourceFile.textContent = `${meta.sourceFile || "updated golf-ball database"} · Store Mode: ${retailerLabel()}`;
   }
 
   function render() {
@@ -521,6 +620,7 @@
   function resetControls() {
     Object.assign(state, {
       audience: "men",
+      retailer: "all",
       swing: "not-sure",
       feel: "no-preference",
       cover: "balanced",
@@ -534,6 +634,7 @@
     $$("[data-field]").forEach((button) => {
       const shouldBeActive =
         (button.dataset.field === "audience" && button.dataset.value === "men") ||
+        (button.dataset.field === "retailer" && button.dataset.value === "all") ||
         (button.dataset.field === "swing" && button.dataset.value === "not-sure") ||
         (button.dataset.field === "feel" && button.dataset.value === "no-preference") ||
         (button.dataset.field === "cover" && button.dataset.value === "balanced") ||
@@ -585,15 +686,29 @@
       if (window.innerWidth <= 760) {
         document.body.classList.remove("controls-open");
         const toggle = $("#mobileFilterToggle");
-        if (toggle) toggle.textContent = "Find Your Fit";
+        if (toggle) {
+          toggle.textContent = "Find Your Fit";
+          if (typeof setMobileFitButtonTheme === "function") setMobileFitButtonTheme();
+        }
         $(".results")?.scrollIntoView({ behavior: "smooth", block: "start" });
       }
     });
     $("#reset")?.addEventListener("click", resetControls);
-
+    $("#mobilePanelClose")?.addEventListener("click", () => {
+      document.body.classList.remove("controls-open");
+      const toggle = $("#mobileFilterToggle");
+      if (toggle) {
+        toggle.textContent = "Find Your Fit";
+        if (typeof setMobileFitButtonTheme === "function") setMobileFitButtonTheme();
+      }
+    });
     $("#mobileFilterToggle")?.addEventListener("click", () => {
       const isOpen = document.body.classList.toggle("controls-open");
-      $("#mobileFilterToggle").textContent = isOpen ? "Hide Fit" : "Find Your Fit";
+      const toggle = $("#mobileFilterToggle");
+      if (toggle) {
+        toggle.textContent = isOpen ? "Find Your Fit" : "Find Your Fit";
+        if (typeof setMobileFitButtonTheme === "function") setMobileFitButtonTheme();
+      }
     });
   }
 
@@ -607,6 +722,8 @@
 
     addSupportingStyles();
     addAudienceSelector();
+    addRetailerSelector();
+    addMobilePanelCloseButton();
     populateBrands();
     bindEvents();
     render();

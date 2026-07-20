@@ -1,0 +1,10 @@
+Testing Notes — Mobile Bottom Button Fix
+
+1. Test on an actual phone or phone-width browser.
+2. Confirm Find Your Fit is locked to the bottom of the screen.
+3. Tap Find Your Fit.
+4. Confirm the filter panel opens above the bottom button.
+5. Confirm the panel scrolls fully and no controls are hidden behind the button.
+6. Tap Hide Fit to close the panel.
+7. Select Ladies and confirm the bottom button turns pink.
+8. Select Mens and confirm the bottom button returns to orange.

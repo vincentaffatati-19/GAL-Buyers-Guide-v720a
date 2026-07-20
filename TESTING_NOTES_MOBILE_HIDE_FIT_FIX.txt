@@ -1,0 +1,12 @@
+Testing Notes — Mobile Hide Fit Fix
+
+1. Test on a phone-width screen.
+2. Confirm Find Your Fit is fixed at the bottom while the filter panel is closed.
+3. Tap Find Your Fit.
+4. Confirm the bottom button disappears completely.
+5. Confirm Hide Fit appears inside the filter panel at the top.
+6. Confirm Hide Fit scrolls with the panel and does not float over menu controls.
+7. Confirm all selections can be reached and tapped.
+8. Tap Hide Fit to close the panel.
+9. Confirm Find Your Fit returns to the bottom.
+10. Confirm Ladies mode remains pink and Mens mode remains orange.

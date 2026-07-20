@@ -764,3 +764,165 @@ body.women-golfer-mode .factory-question {
     z-index: 40;
   }
 }
+
+
+/* FINAL MOBILE FIX: remove floating Hide Fit button */
+@media (max-width: 760px) {
+  :root {
+    --fit-button-height: 62px;
+    --fit-bottom-space: calc(var(--fit-button-height) + 28px + env(safe-area-inset-bottom));
+  }
+
+  body {
+    padding-bottom: var(--fit-bottom-space) !important;
+  }
+
+  /* Closed state: Find Your Fit is bottom-locked. */
+  .mobile-filter-toggle {
+    position: fixed !important;
+    left: 12px !important;
+    right: 12px !important;
+    bottom: calc(10px + env(safe-area-inset-bottom)) !important;
+    top: auto !important;
+    z-index: 1000 !important;
+    width: auto !important;
+    min-height: var(--fit-button-height) !important;
+    margin: 0 !important;
+    border-radius: 999px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, .28) !important;
+  }
+
+  /* Open state: remove the floating Hide Fit bottom button completely. */
+  body.controls-open .mobile-filter-toggle {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
+  body.controls-open {
+    overflow: hidden !important;
+    padding-bottom: 0 !important;
+  }
+
+  body.controls-open .controls {
+    display: block !important;
+    position: fixed !important;
+    left: 12px !important;
+    right: 12px !important;
+    top: 12px !important;
+    bottom: 12px !important;
+    z-index: 900 !important;
+    max-height: none !important;
+    height: auto !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain !important;
+    padding-bottom: calc(28px + env(safe-area-inset-bottom)) !important;
+  }
+
+  body.controls-open .controls::after {
+    content: "";
+    display: block;
+    height: 28px;
+  }
+
+  /* In-panel Hide Fit button: scrolls with the menu, does not float. */
+  .mobile-panel-close {
+    display: none !important;
+  }
+
+  body.controls-open .mobile-panel-close {
+    display: block !important;
+    position: relative !important;
+    top: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    right: auto !important;
+    width: 100% !important;
+    min-height: 48px !important;
+    margin: 0 0 14px 0 !important;
+    border: 0 !important;
+    border-radius: 999px !important;
+    background: #0b1f33 !important;
+    color: #ffffff !important;
+    font-weight: 900 !important;
+    font-size: 1rem !important;
+    box-shadow: none !important;
+  }
+
+  body.women-golfer-mode .mobile-filter-toggle,
+  body.women-golfer-mode .mobile-filter-toggle.women-fit {
+    background: #ec4899 !important;
+    color: #ffffff !important;
+    border-color: #f9a8d4 !important;
+  }
+
+  body.women-golfer-mode.controls-open .mobile-panel-close {
+    background: #831843 !important;
+    color: #ffffff !important;
+  }
+}
+
+@media (min-width: 761px) {
+  .mobile-panel-close {
+    display: none !important;
+  }
+}
+
+
+
+
+/* Retailer / Store Mode */
+.retailer-control {
+  border: 1px solid rgba(245, 164, 0, .28);
+  border-radius: 16px;
+  padding: 12px;
+  background: #fffaf0;
+}
+
+.retailer-segmented {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.retailer-segmented button {
+  min-height: 42px;
+  font-size: .84rem;
+}
+
+.retailer-mode-note {
+  border: 1px solid rgba(12, 31, 51, .12);
+  border-left: 5px solid #f5a400;
+  border-radius: 14px;
+  background: #fffaf0;
+  padding: 10px 12px;
+  font-size: .78rem;
+  line-height: 1.4;
+  color: #46515c;
+}
+
+.retailer-mode-note b {
+  color: #0b1f33;
+}
+
+.retailer-mode-note span {
+  display: block;
+  margin-top: 4px;
+  font-size: .73rem;
+  font-weight: 800;
+  color: #92400e;
+}
+
+body.women-golfer-mode .retailer-mode-note {
+  border-left-color: #ec4899;
+  background: #fff1f8;
+}
+
+body.women-golfer-mode .retailer-control {
+  border-color: rgba(236, 72, 153, .30);
+  background: #fff1f8;
+}

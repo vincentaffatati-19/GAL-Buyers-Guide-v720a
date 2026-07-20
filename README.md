@@ -170,3 +170,54 @@ Ladies mode keeps the pink styling and women-focused fitting logic.
 Visible selection buttons now read:
 - Mens
 - Ladies
+
+
+## Mobile Find Your Fit button fix
+
+This build fixes the mobile layout problem where the Find Your Fit button could float over and obstruct the filter menu.
+
+Changes:
+- Find Your Fit is no longer sticky/floating on mobile.
+- The mobile filter panel opens as its own scrollable panel.
+- Added a Close button inside the mobile filter panel.
+- Ladies mode still turns the Find Your Fit button pink.
+
+
+## Mobile bottom-locked Find Your Fit button
+
+This build fixes the mobile app layout by locking the Find Your Fit button to the bottom of the phone screen.
+
+Mobile behavior:
+- Find Your Fit is fixed at the bottom of the screen.
+- When the filter menu opens, the menu scrolls above the button.
+- The button no longer overlays the menu controls.
+- Tap Hide Fit to close the menu.
+- Ladies mode still turns the button pink.
+
+
+## Mobile Hide Fit fix
+
+This build removes the floating Hide Fit bottom button on mobile.
+
+Mobile behavior:
+- Closed: Find Your Fit is fixed at the bottom of the phone screen.
+- Open: the bottom button disappears completely.
+- Open: a non-floating Hide Fit button appears inside the filter panel.
+- The filter panel scrolls normally and no menu item should be blocked.
+
+
+## Retailer Mode test
+
+This build adds Store Mode / Retailer Mode to Find Your Fit.
+
+Choices:
+- All
+- Walmart
+- Dick’s
+- PGA Superstore
+- Amazon
+- Brand Direct
+
+When a retailer is selected, results are filtered to balls that the current database identifies as available or commonly checked through that retailer/source. This is not live inventory, and local store availability may vary.
+
+Each card now includes a retailer note and the shopping/source button changes based on the selected retailer.

@@ -1,0 +1,14 @@
+Testing Notes — Retailer Mode
+
+1. Open on phone-width screen.
+2. Tap Find Your Fit.
+3. Confirm there is a "Where are you shopping?" section.
+4. Select Walmart.
+5. Confirm results narrow to Walmart-available/currently listed options.
+6. Check a card:
+   - It should show a Walmart availability note.
+   - The button should say Check Walmart.
+7. Try Dick’s, PGA Superstore, Amazon, and Brand Direct.
+8. Try All to return to the full database.
+9. Confirm Ladies mode still turns the app accents pink.
+10. Confirm Find Your Fit / Hide Fit mobile behavior still works.

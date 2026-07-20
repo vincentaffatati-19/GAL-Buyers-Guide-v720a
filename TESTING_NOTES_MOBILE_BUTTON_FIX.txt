@@ -1,0 +1,10 @@
+Testing Notes — Mobile Button Fix
+
+1. Open the app on a phone-width screen.
+2. Confirm Find Your Fit appears in normal page flow and does not float over content.
+3. Tap Find Your Fit.
+4. Confirm the filter panel opens full-screen/near-full-screen and scrolls.
+5. Confirm the Find Your Fit button does not obstruct any menu selections.
+6. Tap Close inside the filter panel to close it.
+7. Select Ladies and confirm the button remains pink after closing.
+8. Select Mens and confirm the button returns to orange.
