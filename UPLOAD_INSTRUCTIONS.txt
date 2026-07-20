@@ -1,0 +1,28 @@
+GitHub Upload Instructions
+
+Upload the CONTENTS of this ZIP to the root of your GitHub repository.
+Do not upload the ZIP file itself.
+
+This version includes:
+- Mobile-friendly app
+- Men/Women audience selector
+- Updated database fields for audience eligibility
+- Company logo at root
+- Factory Question card context
+
+Required root files:
+- index.html
+- app.js
+- data.js
+- styles.css
+- README.md
+- .nojekyll
+- golf_analytics_lab_logo.png
+- golf_ball_database.json
+
+Then confirm GitHub Pages:
+Settings → Pages → Deploy from branch → main → /root → Save
+
+After upload, hard refresh:
+Mac: Command + Shift + R
+Windows: Ctrl + F5

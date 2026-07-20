@@ -1,0 +1,15 @@
+Testing Notes — Gender Fit Update
+
+1. Open index.html locally or upload to GitHub Pages.
+2. On a phone or narrow browser, tap Find Your Fit.
+3. Select Man Golfer:
+   - Find Your Fit button should remain orange.
+   - Standard fit copy should display.
+4. Select Women Golfer:
+   - Find Your Fit button should turn pink.
+   - Fit labels/help text should change to women-specific guidance.
+   - Results should include women-specific and unisex options.
+5. Tap Find:
+   - Filter panel should close on mobile.
+   - Button text should return to Find Your Fit.
+   - Button should remain pink while Women Golfer mode is active.

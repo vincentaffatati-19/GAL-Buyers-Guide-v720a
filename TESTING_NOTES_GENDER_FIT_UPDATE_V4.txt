@@ -1,0 +1,8 @@
+Testing Notes — Gender Label Update v4
+
+Confirm the selector buttons read:
+- Mens
+- Ladies
+
+Ladies mode should still turn the Find Your Fit button pink.
+Mens mode should retain the original orange styling.

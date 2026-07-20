@@ -1,0 +1,13 @@
+Testing Notes — Gender Fit Update v2
+
+1. Open index.html locally or upload to GitHub Pages.
+2. Tap Find Your Fit on a phone-width screen.
+3. Confirm the gender selector only shows:
+   - Man Golfer
+   - Woman Golfer
+4. Select Woman Golfer:
+   - Find Your Fit button should turn pink.
+   - The filter panel should show pink Woman Golfer styling.
+5. Confirm the left/filter panel scrolls all the way down on mobile.
+6. Select Man Golfer:
+   - Button returns to the original orange styling.

@@ -1,0 +1,13 @@
+Testing Notes — Gender Label Update v3
+
+1. Open index.html locally or upload to GitHub Pages.
+2. Tap Find Your Fit on a phone-width screen.
+3. Confirm the selector buttons read only:
+   - Men
+   - Ladies
+4. Select Ladies:
+   - Find Your Fit button should turn pink.
+   - Fit panel should show Ladies Fit styling.
+   - Left/filter panel should scroll properly.
+5. Select Men:
+   - Button returns to the original orange styling.
