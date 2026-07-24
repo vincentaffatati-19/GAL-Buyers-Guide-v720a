@@ -221,3 +221,21 @@ Choices:
 When a retailer is selected, results are filtered to balls that the current database identifies as available or commonly checked through that retailer/source. This is not live inventory, and local store availability may vary.
 
 Each card now includes a retailer note and the shopping/source button changes based on the selected retailer.
+
+
+## Master Database v2 rebuild
+
+This GitHub-ready package rebuilds the application using `golf_ball_master_database_v2.xlsx`.
+
+Included features:
+- Mobile-friendly Golf Analytics Lab app
+- Mens / Ladies fit selector
+- Ladies mode pink styling
+- Mobile Find Your Fit / Hide Fit behavior
+- Retailer Mode / Store Mode
+- Retailer-specific buttons and availability notes
+- Factory Question production/origin context
+- App data generated from the Master Database v2 workbook
+
+Database records: 77
+Generated: 2026-07-24

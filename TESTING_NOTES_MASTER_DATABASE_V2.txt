@@ -1,0 +1,22 @@
+Testing Notes — Master Database v2 App
+
+1. Open index.html locally or deploy to GitHub Pages.
+2. Confirm the app loads 77 records.
+3. Tap Find Your Fit on a phone-width screen.
+4. Confirm Mens / Ladies selector appears.
+5. Confirm Ladies mode turns accents pink.
+6. Confirm Retailer Mode appears:
+   - All
+   - Walmart
+   - Dick’s
+   - PGA Superstore
+   - Amazon
+   - Brand Direct
+7. Select Walmart and confirm results narrow to Walmart-confirmed/current database options.
+8. Select All to return to the full database.
+9. Confirm cards show:
+   - 4 C's
+   - Retailer note
+   - Factory Question
+   - Correct shopping/source button
+10. Confirm Hide Fit does not float over the menu controls.

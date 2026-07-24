@@ -1,0 +1,31 @@
+GitHub Upload Instructions
+
+Upload the CONTENTS of this ZIP to the root of your GitHub Pages repository.
+Do not upload the ZIP file itself.
+
+Required root files:
+- index.html
+- app.js
+- data.js
+- styles.css
+- golf_analytics_lab_logo.png
+- .nojekyll
+
+Recommended supporting files included:
+- README.md
+- golf_ball_database.json
+- golf_ball_database_app_ready.json
+- golf_ball_master_database_v2.xlsx
+- GITHUB_UPLOAD_INSTRUCTIONS.txt
+- TESTING_NOTES_MASTER_DATABASE_V2.txt
+
+After upload:
+1. Go to GitHub repository Settings.
+2. Open Pages.
+3. Select Deploy from branch.
+4. Branch: main
+5. Folder: /root
+6. Save.
+7. Hard refresh the app:
+   - Mac: Command + Shift + R
+   - Windows: Ctrl + F5
