@@ -223,19 +223,44 @@ When a retailer is selected, results are filtered to balls that the current data
 Each card now includes a retailer note and the shopping/source button changes based on the selected retailer.
 
 
-## Master Database v2 rebuild
+## V3 database rebuild
 
-This GitHub-ready package rebuilds the application using `golf_ball_master_database_v2.xlsx`.
+This package rebuilds the Golf Analytics Lab Buyers Guide using the uploaded expanded V3 database.
 
-Included features:
-- Mobile-friendly Golf Analytics Lab app
-- Mens / Ladies fit selector
-- Ladies mode pink styling
-- Mobile Find Your Fit / Hide Fit behavior
-- Retailer Mode / Store Mode
-- Retailer-specific buttons and availability notes
-- Factory Question production/origin context
-- App data generated from the Master Database v2 workbook
+- Records: 115
+- Brands: 30
+- New source workbook: `GAL_Golf_Ball_Database_v3.xlsx`
+- New app data: `data.js`
+- Uploaded V3 app reference retained as `app_v3_uploaded_reference.js`
+- Current app shell preserves Mens/Ladies mode, Retailer Mode, and the latest mobile Hide Fit behavior.
 
-Database records: 77
-Generated: 2026-07-24
+### Source README excerpt
+
+```text
+GOLF ANALYTICS LAB BUYERS GUIDE — EXPANDED V3
+================================================
+Contents:
+- GAL_Golf_Ball_Database_v3.xlsx
+- data.js
+- app.js
+
+Database:
+- 115 active golf-ball records
+- 30 brands
+- 34 newly added records across:
+  Mizuno, PXG, Inesis, Legato, Piper Golf, Saintnine,
+  Honma, XXIO, Ram and Trust
+
+Install:
+1. Back up the current buyers-guide folder.
+2. Replace data.js and app.js.
+3. Keep data.js loaded before app.js in index.html.
+4. Test all filters, sorting and audience selection.
+
+Publication standard:
+- High confidence: supported by an identified primary/current source.
+- Medium confidence: product is documented, but availability or one or more specifications need checking.
+- Low confidence: do not publish as verified until the Verification Queue is completed.
+- Blank/null compression or price values are intentional and must not be replaced with guesses.
+
+```

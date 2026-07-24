@@ -1,0 +1,28 @@
+GitHub Upload Instructions — GAL Buyers Guide V3
+
+Upload the CONTENTS of this ZIP to the root of your GitHub Pages repository.
+Do not upload the ZIP file itself.
+
+Required root files:
+- index.html
+- app.js
+- data.js
+- styles.css
+- golf_analytics_lab_logo.png
+- .nojekyll
+
+Included source/support files:
+- GAL_Golf_Ball_Database_v3.xlsx
+- golf_ball_database_v3_app_ready.json
+- README.md
+- README_V3_SOURCE.txt
+- app_v3_uploaded_reference.js
+- GITHUB_UPLOAD_INSTRUCTIONS_V3.txt
+- TESTING_NOTES_V3_APP.txt
+
+Important:
+- Keep data.js loaded before app.js in index.html.
+- Null compression and price values are intentional when not reliably published.
+- Hard refresh after upload:
+  - Mac: Command + Shift + R
+  - Windows: Ctrl + F5

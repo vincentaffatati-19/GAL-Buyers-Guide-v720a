@@ -1,0 +1,25 @@
+Testing Notes — GAL Buyers Guide V3
+
+1. Open index.html locally or upload to GitHub Pages.
+2. Confirm the source file reads GAL_Golf_Ball_Database_v3.xlsx.
+3. Confirm the app reports 115 records and 30 brands.
+4. Tap Find Your Fit on a phone-width screen.
+5. Confirm Mens / Ladies selection still works.
+6. Confirm Ladies mode still turns pink.
+7. Confirm Store Mode / Retailer Mode still appears.
+8. Test retailer filters:
+   - All
+   - Walmart
+   - Dick’s
+   - PGA Superstore
+   - Amazon
+   - Brand Direct
+9. Confirm result cards still show:
+   - Compression
+   - Construction
+   - Cover
+   - Cost
+   - Retailer note
+   - Factory Question
+10. Confirm Hide Fit does not float over the mobile menu.
+11. Confirm blank/null compression or price values display without breaking the app.
