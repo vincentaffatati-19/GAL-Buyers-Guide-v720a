@@ -1,0 +1,21 @@
+Testing Notes — Meijer Updated Fixed Build
+
+1. Confirm source file displays golf_ball_database_meijer_updated.xlsx.
+2. Confirm the app loads 116 records.
+3. Confirm Find Your Fit works on mobile.
+4. Confirm Hide Fit appears inside the panel, not floating over the controls.
+5. Confirm Mens / Ladies works.
+6. Confirm Ladies mode turns pink.
+7. Confirm Retailer Mode includes:
+   - All
+   - Walmart
+   - Dick’s
+   - PGA Superstore
+   - Amazon
+   - Meijer
+   - Sam’s Club
+   - Costco
+   - Brand Direct
+8. Select Meijer and confirm the Meijer Hybrid Performance ball appears.
+9. Select Walmart and confirm Walmart-filtered options appear.
+10. Select All to return to the full database.

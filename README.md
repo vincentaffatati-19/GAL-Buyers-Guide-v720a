@@ -1,266 +1,35 @@
-# Golf Ball Buyers Guide
+# Golf Analytics Lab — Build a Better Bag Golf Ball Buyers Guide
 
-GitHub Pages-ready static app for the Golf Analytics Lab **Build a Better Bag — Golf Ball Buyers Guide**.
+## Meijer-updated GitHub package
 
-## Source database
+This package rebuilds the app using the uploaded expanded database:
 
-Built from the uploaded spreadsheet:
+- Source workbook: `golf_ball_database_meijer_updated.xlsx`
+- Records: 116
+- Brands: 29
+- Recommendation-eligible records: 110
+- Live app data: `data.js`
+- Fixed app shell: `app.js`
 
-`golf_ball_brand_matrix.xlsx`
+## Important fix
 
-Converted records: **77 golf balls**
+The uploaded `app(1).js` is included only as `app_uploaded_reference_mobile_incomplete.js`.
+It is not used as the live app file because it does not contain the fixed mobile Find Your Fit / Hide Fit panel behavior.
 
-## Publish on GitHub Pages
+Use this package as a full upload to GitHub Pages rather than replacing only one JavaScript file.
 
-1. Create a new GitHub repository.
-2. Upload all files in this ZIP to the root of the repository.
-3. Go to **Settings → Pages**.
-4. Set **Source** to **Deploy from a branch**.
-5. Set **Branch** to `main` and folder to `/root`.
-6. Save.
-7. Open the published GitHub Pages link after deployment completes.
+## Features preserved
 
-## Scoring model
+- Working mobile Find Your Fit button
+- Non-floating Hide Fit button inside the mobile filter panel
+- Mens / Ladies selector
+- Ladies pink styling
+- Retailer Mode / Store Mode
+- Walmart, Dick’s, PGA Superstore, Amazon, Meijer, Sam’s Club, Costco, Brand Direct
+- Factory Question compatibility
+- Meijer private-label record support
 
-This rebuild uses value-weighted fit scoring:
+## GitHub upload
 
-- Compression fit: 30%
-- Feel: 15%
-- Cover: 15%
-- Construction: 10%
-- Cost/value: 30%
-
-Cost affects the score even when the golfer chooses “No preference” for budget.
-
-
-## Theme update
-
-The application background has been changed to navy blue: `#071a33`.
-
-
-## Font color update
-
-Navy-background areas now use light text, while white panels/cards/tables use dark text.
-
-
-## Logo and theme update
-
-- Header logo updated to use the uploaded company artwork: `assets/golf_analytics_lab_logo.png`
-- Application navy background updated to match the logo tone: `#011734`
-
-
-## Logo path update
-
-The app now uses the logo from the repository root:
-
-`golf_analytics_lab_logo.png`
-
-No `assets` folder is required.
-
-
-## Mobile-compatible version
-
-This version adds:
-
-- Phone-first responsive layout
-- Sticky mobile "Show filters" button
-- Larger tap targets
-- Single-column results on phones
-- Hidden comparison table on phones for cleaner scrolling
-- Logo and navy theme retained
-- Root-level logo file, so no assets folder is required
-
-
-## Mobile usability update
-
-The sticky mobile filter button now says `Find Your Fit` when closed and `Hide Fit` when open.
-
-
-## Database refresh
-
-Database refreshed: 2026-07-09
-
-- Source workbook: `golf_ball_database_current_verified.xlsx`
-- Records in app database: 77
-- Added link audit and source notes
-- Updated `data.js` with current source URLs, pricing where verified, and confidence notes
-
-
-## Production/origin database update
-
-This version adds production and origin information:
-
-- Manufacturing Country
-- Production Location
-- Design Origin
-- Company / Brand Origin
-- Production Notes
-- Production Confidence
-- Production Source URL
-
-Important: golf-ball country of origin is often SKU/package specific. Use the confidence field to distinguish verified brand-level production facts from rows that need package confirmation.
-
-
-## Factory Question update
-
-Each ball card now includes a buyer-guide production section:
-
-- Made
-- Production model
-- Design origin
-- Production confidence
-- Production location
-- Production notes
-- Production source link
-
-This section is intended as trust/context, not as a replacement for the 4 C's.
-
-
-## Audience update
-
-This version uses the uploaded men/women audience-aware `app.js`.
-
-Added to the app:
-- “Who are you shopping for?” selector
-- Men = unisex models
-- Women = women-specific + unisex models
-- Women-specific badge on matching cards
-- Women's fit rationale in the card notes
-- Existing mobile “Find Your Fit” / “Hide Fit” behavior preserved
-- Factory Question card context preserved
-
-
-## Gender fit update
-
-This testing build adds an explicit golfer choice:
-
-- Man Golfer: leaves the existing orange Find Your Fit button and standard GAL fitting logic.
-- Women Golfer: changes the mobile Find Your Fit button to pink, keeps women-specific + unisex models, and changes the fitting guidance to focus on easier launch, softer compression, carry-distance ranges, budget comfort, and short-game priority.
-
-Women-specific fit adjustments:
-- Slower / easy launch: under roughly 160 yards driver carry
-- Moderate: roughly 160–200 yards carry
-- Faster: 200+ yards carry
-- Added extra scoring credit for lower compression, easy launch, women-specific models, and soft-feel unisex options.
-
-
-## Gender fit update v2
-
-Changes:
-- Gender selector now displays only:
-  - Man Golfer
-  - Woman Golfer
-- Removed the description labels under the gender selector.
-- Woman Golfer mode now turns the fit display pink.
-- Fixed the left/filter panel scrolling issue on desktop and mobile.
-
-
-## Gender label update v3
-
-Visible selection buttons now read:
-- Men
-- Ladies
-
-The word “Golfer” was removed from the selection buttons.
-Ladies mode keeps the pink styling and women-focused fitting logic.
-
-
-## Gender label update v4
-
-Visible selection buttons now read:
-- Mens
-- Ladies
-
-
-## Mobile Find Your Fit button fix
-
-This build fixes the mobile layout problem where the Find Your Fit button could float over and obstruct the filter menu.
-
-Changes:
-- Find Your Fit is no longer sticky/floating on mobile.
-- The mobile filter panel opens as its own scrollable panel.
-- Added a Close button inside the mobile filter panel.
-- Ladies mode still turns the Find Your Fit button pink.
-
-
-## Mobile bottom-locked Find Your Fit button
-
-This build fixes the mobile app layout by locking the Find Your Fit button to the bottom of the phone screen.
-
-Mobile behavior:
-- Find Your Fit is fixed at the bottom of the screen.
-- When the filter menu opens, the menu scrolls above the button.
-- The button no longer overlays the menu controls.
-- Tap Hide Fit to close the menu.
-- Ladies mode still turns the button pink.
-
-
-## Mobile Hide Fit fix
-
-This build removes the floating Hide Fit bottom button on mobile.
-
-Mobile behavior:
-- Closed: Find Your Fit is fixed at the bottom of the phone screen.
-- Open: the bottom button disappears completely.
-- Open: a non-floating Hide Fit button appears inside the filter panel.
-- The filter panel scrolls normally and no menu item should be blocked.
-
-
-## Retailer Mode test
-
-This build adds Store Mode / Retailer Mode to Find Your Fit.
-
-Choices:
-- All
-- Walmart
-- Dick’s
-- PGA Superstore
-- Amazon
-- Brand Direct
-
-When a retailer is selected, results are filtered to balls that the current database identifies as available or commonly checked through that retailer/source. This is not live inventory, and local store availability may vary.
-
-Each card now includes a retailer note and the shopping/source button changes based on the selected retailer.
-
-
-## V3 database rebuild
-
-This package rebuilds the Golf Analytics Lab Buyers Guide using the uploaded expanded V3 database.
-
-- Records: 115
-- Brands: 30
-- New source workbook: `GAL_Golf_Ball_Database_v3.xlsx`
-- New app data: `data.js`
-- Uploaded V3 app reference retained as `app_v3_uploaded_reference.js`
-- Current app shell preserves Mens/Ladies mode, Retailer Mode, and the latest mobile Hide Fit behavior.
-
-### Source README excerpt
-
-```text
-GOLF ANALYTICS LAB BUYERS GUIDE — EXPANDED V3
-================================================
-Contents:
-- GAL_Golf_Ball_Database_v3.xlsx
-- data.js
-- app.js
-
-Database:
-- 115 active golf-ball records
-- 30 brands
-- 34 newly added records across:
-  Mizuno, PXG, Inesis, Legato, Piper Golf, Saintnine,
-  Honma, XXIO, Ram and Trust
-
-Install:
-1. Back up the current buyers-guide folder.
-2. Replace data.js and app.js.
-3. Keep data.js loaded before app.js in index.html.
-4. Test all filters, sorting and audience selection.
-
-Publication standard:
-- High confidence: supported by an identified primary/current source.
-- Medium confidence: product is documented, but availability or one or more specifications need checking.
-- Low confidence: do not publish as verified until the Verification Queue is completed.
-- Blank/null compression or price values are intentional and must not be replaced with guesses.
-
-```
+Upload the contents of this ZIP to the repository root. Do not upload the ZIP file itself.
+Keep `data.js` loaded before `app.js`.

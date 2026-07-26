@@ -1,0 +1,28 @@
+GitHub Upload Instructions — Meijer Updated Fixed Build
+
+Upload the CONTENTS of this ZIP to the root of your GitHub Pages repository.
+Do not upload the ZIP file itself.
+
+Required root files:
+- index.html
+- app.js
+- data.js
+- styles.css
+- golf_analytics_lab_logo.png
+- .nojekyll
+
+Important:
+- Replace the full set of files together.
+- Do not replace the live app.js with app_uploaded_reference_mobile_incomplete.js.
+- data.js must load before app.js.
+- After upload, hard refresh:
+  - Mac: Command + Shift + R
+  - Windows: Ctrl + F5
+
+Mobile Find Your Fit test:
+1. Open the app on a phone.
+2. Tap Find Your Fit at the bottom.
+3. The filter panel should open.
+4. The bottom button should disappear.
+5. Hide Fit should appear inside the panel and should not float over controls.
+6. Tap Hide Fit to close the panel.

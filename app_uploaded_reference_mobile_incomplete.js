@@ -1,8 +1,9 @@
-
 /*
  * Golf Analytics Lab — Build a Better Bag Golf Ball Buyers Guide
- * Fixed mobile Find Your Fit build.
- * Uses the expanded Meijer-updated database structure.
+ * Men/Women audience update.
+ *
+ * This file works with the existing index.html. It inserts the audience
+ * selector automatically, so no HTML edit is required.
  */
 (function () {
   "use strict";
@@ -14,10 +15,8 @@
       : [];
 
   const meta = window.GOLF_BALL_META || {};
-
   const state = {
     audience: "men",
-    retailer: "all",
     swing: "not-sure",
     feel: "no-preference",
     cover: "balanced",
@@ -26,18 +25,6 @@
     brand: "all",
     search: "",
     sort: "score",
-  };
-
-  const RETAILERS = {
-    all: { label: "All", shortLabel: "All Retailers" },
-    walmart: { label: "Walmart", shortLabel: "Walmart" },
-    dicks: { label: "Dick’s", shortLabel: "Dick’s" },
-    pga: { label: "PGA Superstore", shortLabel: "PGA Superstore" },
-    amazon: { label: "Amazon", shortLabel: "Amazon" },
-    meijer: { label: "Meijer", shortLabel: "Meijer" },
-    sams: { label: "Sam’s Club", shortLabel: "Sam’s Club" },
-    costco: { label: "Costco", shortLabel: "Costco" },
-    brand: { label: "Brand Direct", shortLabel: "Brand Direct" },
   };
 
   const $ = (selector, root = document) => root.querySelector(selector);
@@ -66,116 +53,29 @@
     return terms.some((term) => haystack.includes(term));
   }
 
-  function retailerLabel(value = state.retailer) {
-    return RETAILERS[value]?.shortLabel || "All Retailers";
-  }
-
-  function retailerAvailable(ball, retailer = state.retailer) {
-    if (retailer === "all") return true;
-    if (retailer === "walmart") return Boolean(ball.availableWalmart);
-    if (retailer === "dicks") return Boolean(ball.availableDicks);
-    if (retailer === "pga") return Boolean(ball.availablePgaSuperstore);
-    if (retailer === "amazon") return Boolean(ball.availableAmazon);
-    if (retailer === "meijer") return Boolean(ball.availableMeijer);
-    if (retailer === "sams") return Boolean(ball.availableSamsClub);
-    if (retailer === "costco") return Boolean(ball.availableCostco);
-    if (retailer === "brand") return Boolean(ball.availableBrandDirect);
-    return true;
-  }
-
-  function retailerNote(ball, retailer = state.retailer) {
-    if (retailer === "all") return "Availability varies by store and online channel.";
-    if (retailer === "walmart") return ball.walmartAvailabilityNote || "Walmart availability not confirmed.";
-    if (retailer === "dicks") return ball.dicksAvailabilityNote || "Dick’s availability not confirmed.";
-    if (retailer === "pga") return ball.pgaAvailabilityNote || "PGA Superstore availability not confirmed.";
-    if (retailer === "amazon") return ball.amazonAvailabilityNote || "Amazon availability not confirmed.";
-    if (retailer === "meijer") return ball.meijerAvailabilityNote || "Meijer availability not confirmed.";
-    if (retailer === "sams") return ball.samsAvailabilityNote || "Sam’s Club availability not confirmed.";
-    if (retailer === "costco") return ball.costcoAvailabilityNote || "Costco availability not confirmed.";
-    if (retailer === "brand") return ball.brandAvailabilityNote || "Brand-direct availability not confirmed.";
-    return "Availability varies by retailer.";
-  }
-
-  function retailerLink(ball, retailer = state.retailer) {
-    if (retailer === "walmart") return ball.walmartUrl || "";
-    if (retailer === "dicks") return ball.dicksUrl || "";
-    if (retailer === "pga") return ball.pgaSuperstoreUrl || "";
-    if (retailer === "amazon") return ball.amazonAffiliateUrl || ball.amazonSearchUrl || "";
-    if (retailer === "meijer") return ball.meijerUrl || "";
-    if (retailer === "sams") return ball.samsClubUrl || "";
-    if (retailer === "costco") return ball.costcoUrl || "";
-    if (retailer === "brand") return ball.brandSiteUrl || ball.sourceUrl || "";
-    return ball.sourceUrl || ball.brandSiteUrl || ball.amazonSearchUrl || "";
-  }
-
-  function retailerButtonText(retailer = state.retailer) {
-    if (retailer === "all") return "Product source ↗";
-    if (retailer === "amazon") return "Check Amazon ↗";
-    if (retailer === "brand") return "Brand site ↗";
-    return `Check ${retailerLabel(retailer)} ↗`;
-  }
-
   function addAudienceSelector() {
     const controls = $(".controls");
     const firstExistingGroup = controls?.querySelector(".control-group");
     if (!controls || !firstExistingGroup || $('[data-generated="audience-control"]')) return;
 
     const wrapper = document.createElement("div");
-    wrapper.className = "control-group audience-control";
+    wrapper.className = "control-group";
     wrapper.dataset.generated = "audience-control";
     wrapper.innerHTML = `
       <label>Who are you shopping for?</label>
+      <div class="help">Women includes women-specific and unisex golf balls. Men includes unisex golf balls.</div>
       <div class="segmented">
-        <button class="active" data-field="audience" data-value="men">Mens</button>
-        <button data-field="audience" data-value="women">Ladies</button>
+        <button class="active" data-field="audience" data-value="men">Men<br><small>unisex models</small></button>
+        <button data-field="audience" data-value="women">Women<br><small>women-specific + unisex</small></button>
       </div>
     `;
     controls.insertBefore(wrapper, firstExistingGroup);
   }
 
-  function addRetailerSelector() {
-    const controls = $(".controls");
-    const audienceGroup = $('[data-generated="audience-control"]');
-    if (!controls || $('[data-generated="retailer-control"]')) return;
-
-    const wrapper = document.createElement("div");
-    wrapper.className = "control-group retailer-control";
-    wrapper.dataset.generated = "retailer-control";
-    wrapper.innerHTML = `
-      <label>Where are you shopping?</label>
-      <div class="help">Use Store Mode in the aisle or when shopping a specific retailer. Local inventory may vary.</div>
-      <div class="segmented retailer-segmented">
-        <button class="active" data-field="retailer" data-value="all">All</button>
-        <button data-field="retailer" data-value="walmart">Walmart</button>
-        <button data-field="retailer" data-value="dicks">Dick’s</button>
-        <button data-field="retailer" data-value="pga">PGA Superstore</button>
-        <button data-field="retailer" data-value="amazon">Amazon</button>
-        <button data-field="retailer" data-value="meijer">Meijer</button>
-        <button data-field="retailer" data-value="sams">Sam’s Club</button>
-        <button data-field="retailer" data-value="costco">Costco</button>
-        <button data-field="retailer" data-value="brand">Brand Direct</button>
-      </div>
-    `;
-    if (audienceGroup?.nextSibling) controls.insertBefore(wrapper, audienceGroup.nextSibling);
-    else if (audienceGroup) controls.appendChild(wrapper);
-    else controls.insertBefore(wrapper, controls.firstChild);
-  }
-
-  function addMobilePanelCloseButton() {
-    const controls = $(".controls");
-    if (!controls || $("#mobilePanelClose")) return;
-    const closeButton = document.createElement("button");
-    closeButton.id = "mobilePanelClose";
-    closeButton.type = "button";
-    closeButton.className = "mobile-panel-close";
-    closeButton.textContent = "Hide Fit";
-    controls.insertBefore(closeButton, controls.firstChild);
-  }
-
   function addSupportingStyles() {
-    if ($("#gal-fixed-app-styles")) return;
+    if ($("#gal-gender-js-styles")) return;
     const style = document.createElement("style");
-    style.id = "gal-fixed-app-styles";
+    style.id = "gal-gender-js-styles";
     style.textContent = `
       .ball-card {
         border: 1px solid rgba(12, 31, 51, .14);
@@ -222,7 +122,7 @@
         font-size: .72rem;
         font-weight: 800;
       }
-      .audience-badge--women { background: #fce7f3; color: #831843; }
+      .audience-badge--women { background: #f6c28b; }
       .ball-specs {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -245,52 +145,6 @@
       }
       .ball-card__link:hover { text-decoration: underline; }
       .availability-warning { color: #9a3412; font-weight: 800; font-size: .75rem; }
-      .retailer-control {
-        border: 1px solid rgba(245, 164, 0, .28);
-        border-radius: 16px;
-        padding: 12px;
-        background: #fffaf0;
-      }
-      .retailer-segmented {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-      }
-      .retailer-segmented button { min-height: 42px; font-size: .84rem; }
-      .retailer-mode-note {
-        border: 1px solid rgba(12, 31, 51, .12);
-        border-left: 5px solid #f5a400;
-        border-radius: 14px;
-        background: #fffaf0;
-        padding: 10px 12px;
-        font-size: .78rem;
-        line-height: 1.4;
-        color: #46515c;
-      }
-      .retailer-mode-note b { color: #0b1f33; }
-      .retailer-mode-note span {
-        display: block;
-        margin-top: 4px;
-        font-size: .73rem;
-        font-weight: 800;
-        color: #92400e;
-      }
-      .factory-question {
-        border: 1px solid rgba(12, 31, 51, .12);
-        border-radius: 14px;
-        background: #f8fafc;
-        padding: 10px 12px;
-        font-size: .78rem;
-        line-height: 1.4;
-      }
-      .factory-title { font-weight: 900; color: #0b1f33; margin-bottom: 6px; }
-      .factory-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 6px 10px;
-      }
-      .factory-grid b { color: #0b1f33; display: block; }
-      .factory-note { margin-top: 6px; color: #64748b; font-size: .72rem; }
       .no-results {
         grid-column: 1 / -1;
         padding: 36px 20px;
@@ -298,113 +152,20 @@
         border: 1px dashed rgba(12,31,51,.25);
         border-radius: 14px;
       }
-      body.women-golfer-mode .match-score { background: #831843; }
-      body.women-golfer-mode .retailer-mode-note {
-        border-left-color: #ec4899;
-        background: #fff1f8;
-      }
-      body.women-golfer-mode .retailer-control {
-        border-color: rgba(236,72,153,.30);
-        background: #fff1f8;
-      }
       @media (max-width: 520px) {
-        .ball-specs, .factory-grid { grid-template-columns: 1fr; }
-      }
-      @media (max-width: 760px) {
-        :root {
-          --fit-button-height: 62px;
-          --fit-bottom-space: calc(var(--fit-button-height) + 28px + env(safe-area-inset-bottom));
-        }
-        body { padding-bottom: var(--fit-bottom-space) !important; }
-        .mobile-filter-toggle {
-          position: fixed !important;
-          left: 12px !important;
-          right: 12px !important;
-          bottom: calc(10px + env(safe-area-inset-bottom)) !important;
-          top: auto !important;
-          z-index: 1000 !important;
-          width: auto !important;
-          min-height: var(--fit-button-height) !important;
-          margin: 0 !important;
-          border-radius: 999px !important;
-          display: flex !important;
-          align-items: center !important;
-          justify-content: center !important;
-          box-shadow: 0 14px 34px rgba(0,0,0,.28) !important;
-        }
-        body.controls-open .mobile-filter-toggle {
-          display: none !important;
-          visibility: hidden !important;
-          pointer-events: none !important;
-        }
-        body.controls-open {
-          overflow: hidden !important;
-          padding-bottom: 0 !important;
-        }
-        body.controls-open .controls {
-          display: block !important;
-          position: fixed !important;
-          left: 12px !important;
-          right: 12px !important;
-          top: 12px !important;
-          bottom: 12px !important;
-          z-index: 900 !important;
-          max-height: none !important;
-          height: auto !important;
-          overflow-y: auto !important;
-          -webkit-overflow-scrolling: touch !important;
-          overscroll-behavior: contain !important;
-          padding-bottom: calc(28px + env(safe-area-inset-bottom)) !important;
-        }
-        .mobile-panel-close { display: none !important; }
-        body.controls-open .mobile-panel-close {
-          display: block !important;
-          position: relative !important;
-          width: 100% !important;
-          min-height: 48px !important;
-          margin: 0 0 14px 0 !important;
-          border: 0 !important;
-          border-radius: 999px !important;
-          background: #0b1f33 !important;
-          color: #ffffff !important;
-          font-weight: 900 !important;
-          font-size: 1rem !important;
-          box-shadow: none !important;
-        }
-        body.women-golfer-mode .mobile-filter-toggle,
-        body.women-golfer-mode .mobile-filter-toggle.women-fit {
-          background: #ec4899 !important;
-          color: #ffffff !important;
-          border-color: #f9a8d4 !important;
-        }
-        body.women-golfer-mode.controls-open .mobile-panel-close {
-          background: #831843 !important;
-          color: #ffffff !important;
-        }
-      }
-      @media (min-width: 761px) {
-        .mobile-panel-close { display: none !important; }
+        .ball-specs { grid-template-columns: 1fr; }
       }
     `;
     document.head.appendChild(style);
   }
 
-  function setWomenFitMode() {
-    document.body.classList.toggle("women-golfer-mode", state.audience === "women");
-    setMobileFitButtonTheme();
-  }
-
-  function setMobileFitButtonTheme() {
-    const toggle = $("#mobileFilterToggle");
-    if (!toggle) return;
-    toggle.classList.toggle("women-fit", state.audience === "women");
-  }
-
   function populateBrands() {
     const select = $("#brand");
     if (!select) return;
+
     const brands = [...new Set(balls.map((ball) => ball.brand).filter(Boolean))]
       .sort((a, b) => a.localeCompare(b));
+
     select.innerHTML = '<option value="all">All brands</option>' +
       brands.map((brand) => `<option value="${escapeHtml(brand)}">${escapeHtml(brand)}</option>`).join("");
   }
@@ -417,17 +178,11 @@
     const compression = finiteNumber(ball.compression);
     if (compression === null || state.swing === "not-sure") return 0;
 
-    const menTargets = {
+    const targets = {
       slow: { ideal: 50, tolerance: 28 },
       moderate: { ideal: 72, tolerance: 25 },
       fast: { ideal: 92, tolerance: 24 },
     };
-    const womenTargets = {
-      slow: { ideal: 45, tolerance: 30 },
-      moderate: { ideal: 62, tolerance: 28 },
-      fast: { ideal: 82, tolerance: 26 },
-    };
-    const targets = state.audience === "women" ? womenTargets : menTargets;
     const target = targets[state.swing];
     const distance = Math.abs(compression - target.ideal);
     const score = Math.max(-20, 28 - (distance / target.tolerance) * 30);
@@ -461,6 +216,7 @@
     const cover = normalize(ball.cover);
     const urethane = cover.includes("urethane");
     const durable = includesAny(cover, ["ionomer", "surlyn", "truflex", "hybrid"]);
+
     if (state.cover === "spin") {
       if (urethane) {
         reasons.push("Urethane cover supports more greenside spin and control.");
@@ -468,6 +224,7 @@
       }
       return -7;
     }
+
     if (state.cover === "durable") {
       if (durable && !urethane) {
         reasons.push("Durable cover aligns with value and long-wearing performance.");
@@ -475,6 +232,8 @@
       }
       return urethane ? -5 : 5;
     }
+
+    // Balanced
     if (urethane) return 9;
     if (durable) return 8;
     return 3;
@@ -483,14 +242,17 @@
   function budgetScore(ball, reasons) {
     const price = finiteNumber(ball.parsedPrice);
     if (state.budget === "no-preference" || price === null) return 0;
+
     let match = false;
     if (state.budget === "value") match = price < 30;
     if (state.budget === "mid") match = price >= 30 && price < 45;
     if (state.budget === "premium") match = price >= 45;
+
     if (match) {
       reasons.push(`Price fits the ${state.budget} budget tier.`);
       return 16;
     }
+
     if (state.budget === "value" && price >= 45) return -15;
     if (state.budget === "premium" && price < 30) return -4;
     return -8;
@@ -500,11 +262,13 @@
     if (state.construction === "no-preference") return 0;
     const construction = normalize(ball.construction);
     let match = false;
+
     if (state.construction === "2-piece") match = construction.includes("2-piece");
     if (state.construction === "3-piece") match = construction.includes("3-piece");
     if (state.construction === "4-plus") {
       match = includesAny(construction, ["4-piece", "5-piece", "multi-piece", "dual-core", "tour construction"]);
     }
+
     if (match) {
       reasons.push(`${ball.construction} construction matches your selection.`);
       return 12;
@@ -513,14 +277,17 @@
   }
 
   function audienceScore(ball, reasons) {
-    if (state.audience === "women") {
-      if (ball.productAudience === "Women-specific") {
-        reasons.push("Ladies-focused model included without excluding unisex performance matches.");
-        return 8;
+    if (state.audience === "women" && ball.productAudience === "Women-specific") {
+      const fitText = normalize(ball.suggestedSwingSpeedFit);
+      const swingAligned =
+        state.swing === "not-sure" ||
+        fitText.includes(state.swing) ||
+        (state.swing === "slow" && fitText.includes("moderate"));
+
+      if (swingAligned) {
+        reasons.push("Women-specific design is included without excluding unisex performance matches.");
+        return 5;
       }
-      const compression = finiteNumber(ball.compression);
-      if (state.swing === "slow" && compression !== null && compression <= 60) return 6;
-      if (state.swing === "moderate" && compression !== null && compression <= 75) return 4;
     }
     return 0;
   }
@@ -534,7 +301,7 @@
 
   function availabilityScore(ball, reasons) {
     const status = normalize(ball.linkStatus);
-    if (includesAny(status, ["sold out", "unavailable", "tour prototype", "future"])) {
+    if (includesAny(status, ["sold out", "unavailable"])) {
       reasons.push("Availability may be limited.");
       return -12;
     }
@@ -544,6 +311,7 @@
   function scoreBall(ball) {
     const reasons = [];
     let score = 50;
+
     score += compressionScore(ball, reasons);
     score += feelScore(ball, reasons);
     score += coverScore(ball, reasons);
@@ -552,33 +320,46 @@
     score += audienceScore(ball, reasons);
     score += qualityScore(ball);
     score += availabilityScore(ball, reasons);
+
     score = Math.max(0, Math.min(100, Math.round(score)));
     return { ...ball, score, reasons: reasons.slice(0, 4) };
   }
 
   function matchesFilters(ball) {
-    if (!ball.recommendationEligible && state.retailer !== "all") return false;
     if (!isAudienceEligible(ball)) return false;
-    if (!retailerAvailable(ball)) return false;
     if (state.brand !== "all" && ball.brand !== state.brand) return false;
+
     if (state.search) {
       const haystack = normalize([
-        ball.brand, ball.model, ball.compressionRaw, ball.construction, ball.cover,
-        ball.cost, ball.retailers, ball.notes, ball.womensFitCategory,
-        ball.suggestedSwingSpeedFit, ball.launchProfile, ball.womensFitRationale,
-        ball.productAudience, ball.linkStatus
+        ball.brand,
+        ball.model,
+        ball.compressionRaw,
+        ball.construction,
+        ball.cover,
+        ball.cost,
+        ball.retailers,
+        ball.notes,
+        ball.womensFitCategory,
+        ball.suggestedSwingSpeedFit,
+        ball.launchProfile,
+        ball.womensFitRationale,
+        ball.productAudience,
       ].join(" "));
+
       if (!haystack.includes(normalize(state.search))) return false;
     }
+
     return true;
   }
 
   function sortResults(results) {
     const copy = [...results];
+
     const numberOr = (value, fallback) => {
       const number = finiteNumber(value);
       return number === null ? fallback : number;
     };
+
     const sorters = {
       score: (a, b) => b.score - a.score || a.brand.localeCompare(b.brand) || a.model.localeCompare(b.model),
       "cost-low": (a, b) => numberOr(a.parsedPrice, Infinity) - numberOr(b.parsedPrice, Infinity),
@@ -587,15 +368,18 @@
       "compression-high": (a, b) => numberOr(b.compression, -Infinity) - numberOr(a.compression, -Infinity),
       brand: (a, b) => a.brand.localeCompare(b.brand) || a.model.localeCompare(b.model),
     };
+
     return copy.sort(sorters[state.sort] || sorters.score);
   }
 
   function displayCompression(ball) {
-    return finiteNumber(ball.compression) !== null ? String(ball.compression) : (ball.compressionRaw || "Not published");
+    return finiteNumber(ball.compression) !== null
+      ? String(ball.compression)
+      : (ball.compressionRaw || "Not published");
   }
 
   function audienceLabel(ball) {
-    return ball.productAudience === "Women-specific" ? "Ladies-focused" : "Unisex";
+    return ball.productAudience === "Women-specific" ? "Women-specific" : "Unisex";
   }
 
   function notesFor(ball) {
@@ -606,27 +390,29 @@
   function renderCards(results) {
     const cards = $("#cards");
     if (!cards) return;
+
     if (!results.length) {
       cards.innerHTML = `
         <div class="no-results">
           <h3>No exact matches found</h3>
-          <p>Try All Retailers or loosen one of your fit preferences. Local store inventory changes often.</p>
+          <p>Try resetting one or more preferences. Audience eligibility remains enforced.</p>
         </div>
       `;
       return;
     }
-    cards.innerHTML = results.slice(0, 24).map((ball) => {
+
+    cards.innerHTML = results.slice(0, 12).map((ball) => {
       const womenClass = ball.productAudience === "Women-specific" ? " audience-badge--women" : "";
-      const shoppingUrl = retailerLink(ball);
-      const source = shoppingUrl
-        ? `<a class="ball-card__link" href="${escapeHtml(shoppingUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(retailerButtonText())}</a>`
+      const source = ball.sourceUrl
+        ? `<a class="ball-card__link" href="${escapeHtml(ball.sourceUrl)}" target="_blank" rel="noopener noreferrer">Product source ↗</a>`
         : "";
-      const warning = includesAny(ball.linkStatus, ["sold out", "unavailable", "tour prototype", "future"])
+      const warning = includesAny(ball.linkStatus, ["sold out", "unavailable"])
         ? `<span class="availability-warning">${escapeHtml(ball.linkStatus)}</span>`
         : "";
       const reasons = ball.reasons.length
         ? `<ul class="match-reasons">${ball.reasons.map((reason) => `<li>${escapeHtml(reason)}</li>`).join("")}</ul>`
         : "";
+
       return `
         <article class="ball-card">
           <div class="ball-card__top">
@@ -636,29 +422,19 @@
             </div>
             <div class="match-score">${ball.score}%</div>
           </div>
+
           <span class="audience-badge${womenClass}">${escapeHtml(audienceLabel(ball))}</span>
-          <div class="retailer-mode-note">
-            <b>${escapeHtml(retailerLabel())}:</b> ${escapeHtml(retailerNote(ball))}
-            ${state.retailer !== "all" ? `<span>Ranked only from the selected shopping source.</span>` : `<span>Select a retailer to use Store Mode.</span>`}
-          </div>
+
           <div class="ball-specs">
             <div class="ball-spec"><b>Compression</b>${escapeHtml(displayCompression(ball))}</div>
             <div class="ball-spec"><b>Construction</b>${escapeHtml(ball.construction || "Not listed")}</div>
             <div class="ball-spec"><b>Cover</b>${escapeHtml(ball.cover || "Not listed")}</div>
             <div class="ball-spec"><b>Cost</b>${escapeHtml(ball.cost || "Retailer-dependent")}</div>
           </div>
-          <div class="factory-question">
-            <div class="factory-title">The Factory Question</div>
-            <div class="factory-grid">
-              <div><b>Made</b>${escapeHtml(ball.manufacturingCountry || "Not disclosed")}</div>
-              <div><b>Production</b>${escapeHtml(ball.productionModel || "Not fully disclosed")}</div>
-              <div><b>Design origin</b>${escapeHtml(ball.designOrigin || "Not disclosed")}</div>
-              <div><b>Confidence</b>${escapeHtml(ball.productionConfidence || "Low")}</div>
-            </div>
-            <div class="factory-note">${escapeHtml(ball.productionBuyerGuideNote || "Production origin can vary by model, year, package, and retail channel.")}</div>
-          </div>
+
           ${reasons}
           <p class="ball-card__notes">${escapeHtml(notesFor(ball))}</p>
+
           <div class="ball-card__footer">
             ${source}
             ${warning}
@@ -671,6 +447,7 @@
   function renderComparison(results) {
     const body = $("#compareBody");
     if (!body) return;
+
     body.innerHTML = results.slice(0, 20).map((ball) => `
       <tr>
         <td><b>${escapeHtml(ball.brand)} ${escapeHtml(ball.model)}</b><br><small>${escapeHtml(audienceLabel(ball))}</small></td>
@@ -679,23 +456,24 @@
         <td>${escapeHtml(ball.construction || "—")}</td>
         <td>${escapeHtml(ball.cover || "—")}</td>
         <td>${escapeHtml(ball.cost || "—")}</td>
-        <td>${escapeHtml(retailerLabel())}</td>
+        <td>${escapeHtml(notesFor(ball))}</td>
       </tr>
     `).join("");
   }
 
   function updateStats(results) {
-    const eligiblePool = balls.filter((ball) => isAudienceEligible(ball));
+    const eligiblePool = balls.filter(isAudienceEligible);
     const recordCount = $("#recordCount");
     const brandCount = $("#brandCount");
     const resultCount = $("#resultCount");
     const topPick = $("#topPick");
     const sourceFile = $("#sourceFile");
-    if (recordCount) recordCount.textContent = String(meta.recordCount || balls.length);
-    if (brandCount) brandCount.textContent = String(meta.brandCount || new Set(eligiblePool.map((ball) => ball.brand)).size);
+
+    if (recordCount) recordCount.textContent = String(eligiblePool.length);
+    if (brandCount) brandCount.textContent = String(new Set(eligiblePool.map((ball) => ball.brand)).size);
     if (resultCount) resultCount.textContent = String(results.length);
     if (topPick) topPick.textContent = results[0] ? `${results[0].brand} ${results[0].model}` : "—";
-    if (sourceFile) sourceFile.textContent = `${meta.sourceFile || "updated golf-ball database"} · Store Mode: ${retailerLabel()}`;
+    if (sourceFile) sourceFile.textContent = meta.sourceFile || "updated golf-ball database";
   }
 
   function render() {
@@ -703,7 +481,6 @@
     renderCards(results);
     renderComparison(results);
     updateStats(results);
-    setWomenFitMode();
   }
 
   function setSegmentedValue(field, value, button) {
@@ -716,7 +493,6 @@
   function resetControls() {
     Object.assign(state, {
       audience: "men",
-      retailer: "all",
       swing: "not-sure",
       feel: "no-preference",
       cover: "balanced",
@@ -726,40 +502,33 @@
       search: "",
       sort: "score",
     });
+
     $$("[data-field]").forEach((button) => {
       const shouldBeActive =
         (button.dataset.field === "audience" && button.dataset.value === "men") ||
-        (button.dataset.field === "retailer" && button.dataset.value === "all") ||
         (button.dataset.field === "swing" && button.dataset.value === "not-sure") ||
         (button.dataset.field === "feel" && button.dataset.value === "no-preference") ||
         (button.dataset.field === "cover" && button.dataset.value === "balanced") ||
         (button.dataset.field === "budget" && button.dataset.value === "no-preference");
       button.classList.toggle("active", shouldBeActive);
     });
+
     if ($("#construction")) $("#construction").value = "no-preference";
     if ($("#brand")) $("#brand").value = "all";
     if ($("#search")) $("#search").value = "";
     if ($("#sort")) $("#sort").value = "score";
-    document.body.classList.remove("controls-open");
-    const toggle = $("#mobileFilterToggle");
-    if (toggle) toggle.textContent = "Find Your Fit";
     render();
-  }
-
-  function closeMobilePanel() {
-    document.body.classList.remove("controls-open");
-    const toggle = $("#mobileFilterToggle");
-    if (toggle) {
-      toggle.textContent = "Find Your Fit";
-      setMobileFitButtonTheme();
-    }
   }
 
   function bindEvents() {
     document.addEventListener("click", (event) => {
       const segmentedButton = event.target.closest("button[data-field][data-value]");
       if (segmentedButton) {
-        setSegmentedValue(segmentedButton.dataset.field, segmentedButton.dataset.value, segmentedButton);
+        setSegmentedValue(
+          segmentedButton.dataset.field,
+          segmentedButton.dataset.value,
+          segmentedButton
+        );
       }
     });
 
@@ -767,39 +536,24 @@
       state.construction = event.target.value;
       render();
     });
+
     $("#brand")?.addEventListener("change", (event) => {
       state.brand = event.target.value;
       render();
     });
+
     $("#search")?.addEventListener("input", (event) => {
       state.search = event.target.value;
       render();
     });
+
     $("#sort")?.addEventListener("change", (event) => {
       state.sort = event.target.value;
       render();
     });
 
-    $("#find")?.addEventListener("click", () => {
-      render();
-      if (window.innerWidth <= 760) {
-        closeMobilePanel();
-        $(".results")?.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    });
-
+    $("#find")?.addEventListener("click", render);
     $("#reset")?.addEventListener("click", resetControls);
-
-    $("#mobileFilterToggle")?.addEventListener("click", () => {
-      document.body.classList.add("controls-open");
-      const toggle = $("#mobileFilterToggle");
-      if (toggle) {
-        toggle.textContent = "Find Your Fit";
-        setMobileFitButtonTheme();
-      }
-    });
-
-    $("#mobilePanelClose")?.addEventListener("click", closeMobilePanel);
   }
 
   function initialize() {
@@ -809,13 +563,11 @@
       if (cards) cards.innerHTML = '<div class="no-results"><h3>Database unavailable</h3><p>Confirm data.js loads before app.js.</p></div>';
       return;
     }
+
     addSupportingStyles();
     addAudienceSelector();
-    addRetailerSelector();
-    addMobilePanelCloseButton();
     populateBrands();
     bindEvents();
-    setWomenFitMode();
     render();
   }
 
